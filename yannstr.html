@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB PERKENALAN YANNSTR</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Outfit & Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#00d2ff',
+                            dark: '#080c14',
+                            card: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #080c14;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s ease;
+        }
+
+        .glass-btn:hover {
+            background: rgba(0, 210, 255, 0.06);
+            border-color: rgba(0, 210, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d2ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-6 relative select-none">
+
+    <!-- Canvas Background -->
+    <canvas id="bgCanvas" class="fixed inset-0 w-full h-full -z-10 opacity-30 pointer-events-none"></canvas>
+
+    <!-- 1. FULLSCREEN WELCOME SCREEN -->
+    <div id="welcomeLayer" class="fixed inset-0 z-50 flex items-end justify-center w-full h-full transition-all duration-700 ease-out overflow-hidden bg-black">
+        
+        <video id="welcomeVideo" 
+               autoplay 
+               muted 
+               loop 
+               playsinline 
+               disablepictureinpicture 
+               controlslist="nodownload nofullscreen noremoteplayback"
+               class="absolute inset-0 w-full h-full object-cover pointer-events-none">
+            <source src="https://cdn.imageurlgenerator.com/uploads/a59d596c-015d-447a-8038-577b3632dffc.mp4" type="video/mp4">
+        </video>
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none z-10"></div>
+
+        <div class="relative z-20 w-full max-w-sm px-6 pb-12 text-center flex flex-col items-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-white/10 mb-4">
+                <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+                <span class="text-xs font-bold tracking-widest text-white uppercase font-display">YANNSTR</span>
+            </div>
+
+            <button id="enterBtn" class="w-full py-3.5 rounded-xl bg-brand-blue text-black font-bold text-sm tracking-wider shadow-lg shadow-brand-blue/20 transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2">
+                <span class="font-display uppercase">MASUK PROFIL</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- BACKGROUND AUDIO MUSIC -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.imageurlgenerator.com/uploads/12eee88c-c889-4ab6-b7d8-eee3b742a445.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 2. MAIN PROFILE CONTAINER (Responsive Max-Width & Padding) -->
+    <main id="mainCard" class="w-full max-w-[420px] sm:max-w-[440px] mx-auto transition-all duration-700 relative z-10 my-auto">
+        <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl relative border border-white/10">
+            
+            <!-- A. BANNER SHOWCASE -->
+            <div class="relative w-full h-36 sm:h-44 bg-slate-950 overflow-hidden">
+                <img id="gameBanner" 
+                     src="https://cdn.imageurlgenerator.com/uploads/d4e52747-0617-4cf4-9843-abc3372e5420.png" 
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/1200x675/0a0d14/00d2ff?text=Game+Showcase'" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/30 to-transparent"></div>
+            </div>
+
+            <!-- B. PROFILE CONTENT -->
+            <div class="px-5 sm:px-6 pb-6 relative pt-0">
+                
+                <!-- AVATAR & BADGES -->
+                <div class="flex items-end justify-between -mt-12 sm:-mt-14 mb-4 relative z-10">
+                    <div class="relative">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-0.5 bg-brand-blue shadow-lg shadow-brand-blue/20">
+                            <img id="jbAvatar" 
+                                 src="https://cdn.imageurlgenerator.com/uploads/cd6e070c-ba6f-4788-b94c-35458bb18a60.png" 
+                                 alt="JB Profile -yannstr" 
+                                 class="w-full h-full object-cover rounded-[14px]"
+                                 onerror="this.src='https://placehold.co/400x400/0d111a/00d2ff?text=-yannstr'" />
+                        </div>
+                        <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-brand-card rounded-full" title="Online"></span>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>FAST RESPON</span>
+                        </div>
+                        <div class="px-2.5 py-1 rounded-lg bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-[11px] font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-[10px]"></i>
+                            <span>AMAN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEADER NAME & BLUE TICK -->
+                <div class="mb-4">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-2xl font-extrabold text-white tracking-tight font-display">YannStr</h1>
+                        <!-- Centang Biru Terang -->
+                        <i class="fa-solid fa-circle-check text-brand-blue text-lg" title="Verified Profile"></i>
+                    </div>
+                    <p class="text-gray-400 text-xs font-medium">JB & RENTAL AKUN</p>
+                </div>
+
+                <!-- INFO CARDS (REGION & STATUS) -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="glass-btn p-3 rounded-xl flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center text-brand-blue text-xs shrink-0">
+                            <i class="fa-solid fa-earth-asia"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[9px] text-gray-400 font-bold uppercase">Region</p>
+                            <p class="text-xs font-semibold text-gray-200 truncate">IND | Bali 🇮🇩</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-btn p-3 rounded-xl flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center text-brand-blue text-xs shrink-0">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[9px] text-gray-400 font-bold uppercase">Status</p>
+                            <p class="text-xs font-semibold text-emerald-400 truncate flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Online
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABOUT ME -->
+                <div class="mb-4 glass-btn p-3.5 rounded-xl">
+                    <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-user text-brand-blue"></i> Tentang Saya
+                    </h2>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Halo! Nama saya <strong class="text-white">Yann</strong> pelajar 11 TJKT berusia 16 tahun asal Karangasem, Bali.
+Menyediakan jasa JB (Jual Beli) Akun & Rental Akun terpercaya. keamanan dan kepuasan pelanggan dalam setiap transaksi selalu jadi prioritas utama.
+<strong class="text-white">butuh akun? atau nyari rental akun?</strong> langsung hubungi medsos di bawah
+                    </p>
+                </div>
+
+                <!-- SOCIAL MEDIA BUTTONS -->
+                <div class="space-y-2.5">
+                    <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane text-brand-blue"></i> Contact & MEDSOS
+                    </h2>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/6285801134620?text=hallo+bang+yann" target="_blank" rel="noopener noreferrer" class="glass-btn w-full p-3 rounded-xl flex items-center justify-between group text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs sm:text-sm font-bold group-hover:text-brand-blue transition-colors">WhatsApp Direct</p>
+                                <p class="text-[10px] text-gray-400">Order / Transaksi</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-gray-500 group-hover:text-brand-blue"></i>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/yann16b" target="_blank" rel="noopener noreferrer" class="glass-btn w-full p-3 rounded-xl flex items-center justify-between group text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center text-base">
+                                <i class="fa-brands fa-instagram"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs sm:text-sm font-bold group-hover:text-brand-blue transition-colors">Instagram</p>
+                                <p class="text-[10px] text-gray-400">@yannstr • ig gabut</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-gray-500 group-hover:text-brand-blue"></i>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="https://tiktok.com/@yannjamsut" target="_blank" rel="noopener noreferrer" class="glass-btn w-full p-3 rounded-xl flex items-center justify-between group text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center text-base">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs sm:text-sm font-bold group-hover:text-brand-blue transition-colors">TikTok</p>
+                                <p class="text-[10px] text-gray-400">Tiktok gabut | follow</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-gray-500 group-hover:text-brand-blue"></i>
+                    </a>
+
+                    <!-- WhatsApp Channel -->
+                    <a href="https://whatsapp.com/channel/0029Vb8Nqbq1HspqQgS6ro22" target="_blank" rel="noopener noreferrer" class="glass-btn w-full p-3 rounded-xl flex items-center justify-between group text-white border-brand-blue/30">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-brand-blue/20 text-brand-blue flex items-center justify-center text-base">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs sm:text-sm font-bold text-brand-blue">Saluran WhatsApp</p>
+                                <p class="text-[10px] text-gray-400">Info stok & Rental akun</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-brand-blue"></i>
+                    </a>
+                </div>
+
+                <!-- Footer -->
+                <div class="mt-6 pt-3 border-t border-white/5 text-center">
+                    <p class="text-[11px] text-gray-300 font-medium">
+                        -YANNSTR | JB NEW
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const welcomeLayer = document.getElementById('welcomeLayer');
+        const welcomeVideo = document.getElementById('welcomeVideo');
+        const enterBtn = document.getElementById('enterBtn');
+        const mainCard = document.getElementById('mainCard');
+        const bgMusic = document.getElementById('bgMusic');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (welcomeVideo) {
+                welcomeVideo.play().catch(e => console.log("Autoplay notice:", e));
+            }
+        });
+
+        enterBtn.addEventListener('click', () => {
+            if (welcomeVideo) welcomeVideo.pause();
+            if (bgMusic) bgMusic.play().catch(err => console.log("Audio notice:", err));
+
+            welcomeLayer.classList.add('opacity-0', 'pointer-events-none');
+            mainCard.classList.remove('opacity-0', 'translate-y-4');
+            mainCard.classList.add('opacity-100', 'translate-y-0');
+        });
+    </script>
+</body>
+                          </html>
+                          
